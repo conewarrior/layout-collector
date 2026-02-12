@@ -1,0 +1,16 @@
+-- Supabase Storage bucket creation instructions
+-- Storage buckets cannot be created via SQL; use one of the methods below:
+--
+-- Via Supabase CLI:
+-- supabase storage create-bucket screenshots --public
+--
+-- Via Supabase API (curl):
+-- curl -X POST 'https://[PROJECT_ID].supabase.co/storage/v1/b' \
+--   -H 'authorization: Bearer [ANON_KEY]' \
+--   -H 'Content-Type: application/json' \
+--   -d '{"name":"screenshots","public":true}'
+--
+-- Via Supabase Dashboard:
+-- 1. Storage > Buckets > New Bucket
+-- 2. Name: "screenshots"
+-- 3. Set to Public
