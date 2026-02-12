@@ -1,0 +1,31 @@
+{
+  "name": "layout-collector",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "wxt build",
+    "dev": "wxt",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitest/ui": "^4.0.18",
+    "@wxt-dev/auto-icons": "^1.1.0",
+    "postcss": "^8.5.6",
+    "shadcn-ui": "^0.9.5",
+    "tailwindcss": "^4.1.18",
+    "vitest": "^4.0.18",
+    "wxt": "^0.20.15"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  }
+}
