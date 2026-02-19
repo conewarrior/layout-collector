@@ -81,9 +81,9 @@ describe('Popup App', () => {
 
       expect(screen.getByText('https://example.com')).toBeDefined();
       expect(screen.getByText('Example Site')).toBeDefined();
-      expect(screen.getByLabelText('Page Purpose')).toBeDefined();
-      expect(screen.getByLabelText('Layout Type')).toBeDefined();
-      expect(screen.getByRole('button', { name: /save layout/i })).toBeDefined();
+      expect(screen.getByLabelText('페이지 목적')).toBeDefined();
+      expect(screen.getByLabelText('레이아웃 유형')).toBeDefined();
+      expect(screen.getByRole('button', { name: /레이아웃 저장/ })).toBeDefined();
     });
 
     test('shows screenshot preview', async () => {
@@ -104,7 +104,7 @@ describe('Popup App', () => {
         render(<App />);
       });
 
-      const saveBtn = screen.getByRole('button', { name: /save layout/i }) as HTMLButtonElement;
+      const saveBtn = screen.getByRole('button', { name: /레이아웃 저장/ }) as HTMLButtonElement;
       expect(saveBtn.disabled).toBe(true);
     });
 
@@ -114,10 +114,10 @@ describe('Popup App', () => {
         render(<App />);
       });
 
-      fireEvent.change(screen.getByLabelText('Page Purpose'), { target: { value: 'Landing' } });
-      fireEvent.change(screen.getByLabelText('Layout Type'), { target: { value: 'Hero+CTA' } });
+      fireEvent.change(screen.getByLabelText('페이지 목적'), { target: { value: 'Landing' } });
+      fireEvent.change(screen.getByLabelText('레이아웃 유형'), { target: { value: 'Hero+CTA' } });
 
-      const saveBtn = screen.getByRole('button', { name: /save layout/i }) as HTMLButtonElement;
+      const saveBtn = screen.getByRole('button', { name: /레이아웃 저장/ }) as HTMLButtonElement;
       expect(saveBtn.disabled).toBe(false);
     });
 
@@ -127,9 +127,9 @@ describe('Popup App', () => {
         render(<App />);
       });
 
-      fireEvent.change(screen.getByLabelText('Page Purpose'), { target: { value: 'Landing' } });
+      fireEvent.change(screen.getByLabelText('페이지 목적'), { target: { value: 'Landing' } });
 
-      const saveBtn = screen.getByRole('button', { name: /save layout/i }) as HTMLButtonElement;
+      const saveBtn = screen.getByRole('button', { name: /레이아웃 저장/ }) as HTMLButtonElement;
       expect(saveBtn.disabled).toBe(true);
     });
   });
@@ -145,11 +145,11 @@ describe('Popup App', () => {
         render(<App />);
       });
 
-      fireEvent.change(screen.getByLabelText('Page Purpose'), { target: { value: 'Landing' } });
-      fireEvent.change(screen.getByLabelText('Layout Type'), { target: { value: 'Hero+CTA' } });
+      fireEvent.change(screen.getByLabelText('페이지 목적'), { target: { value: 'Landing' } });
+      fireEvent.change(screen.getByLabelText('레이아웃 유형'), { target: { value: 'Hero+CTA' } });
 
       await act(async () => {
-        fireEvent.click(screen.getByRole('button', { name: /save layout/i }));
+        fireEvent.click(screen.getByRole('button', { name: /레이아웃 저장/ }));
       });
 
       expect(mockInsertLayout).toHaveBeenCalledWith(
@@ -173,11 +173,11 @@ describe('Popup App', () => {
         render(<App />);
       });
 
-      fireEvent.change(screen.getByLabelText('Page Purpose'), { target: { value: 'Landing' } });
-      fireEvent.change(screen.getByLabelText('Layout Type'), { target: { value: 'Card Grid' } });
+      fireEvent.change(screen.getByLabelText('페이지 목적'), { target: { value: 'Landing' } });
+      fireEvent.change(screen.getByLabelText('레이아웃 유형'), { target: { value: 'Card Grid' } });
 
       await act(async () => {
-        fireEvent.click(screen.getByRole('button', { name: /save layout/i }));
+        fireEvent.click(screen.getByRole('button', { name: /레이아웃 저장/ }));
       });
 
       expect(screen.getByText('Layout saved successfully!')).toBeDefined();
@@ -193,15 +193,15 @@ describe('Popup App', () => {
         render(<App />);
       });
 
-      fireEvent.change(screen.getByLabelText('Page Purpose'), { target: { value: 'Dashboard' } });
-      fireEvent.change(screen.getByLabelText('Layout Type'), { target: { value: 'Data Table' } });
+      fireEvent.change(screen.getByLabelText('페이지 목적'), { target: { value: 'Dashboard' } });
+      fireEvent.change(screen.getByLabelText('레이아웃 유형'), { target: { value: 'Data Table' } });
 
       await act(async () => {
-        fireEvent.click(screen.getByRole('button', { name: /save layout/i }));
+        fireEvent.click(screen.getByRole('button', { name: /레이아웃 저장/ }));
       });
 
       expect(screen.getByText('Network error')).toBeDefined();
-      const saveBtn = screen.getByRole('button', { name: /save layout/i }) as HTMLButtonElement;
+      const saveBtn = screen.getByRole('button', { name: /레이아웃 저장/ }) as HTMLButtonElement;
       expect(saveBtn.disabled).toBe(false);
     });
   });
@@ -214,7 +214,7 @@ describe('Popup App', () => {
       });
 
       expect(screen.getByText('Cannot capture this page')).toBeDefined();
-      const saveBtn = screen.getByRole('button', { name: /save layout/i }) as HTMLButtonElement;
+      const saveBtn = screen.getByRole('button', { name: /레이아웃 저장/ }) as HTMLButtonElement;
       expect(saveBtn.disabled).toBe(true);
     });
 

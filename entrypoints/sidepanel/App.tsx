@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { getLayouts, deleteLayout, getScreenshotUrl } from '../../src/services/layout-service';
-import { PAGE_PURPOSES, LAYOUT_TYPES } from '../../src/constants/categories';
+import { PAGE_PURPOSES, LAYOUT_TYPES, PURPOSE_META, LAYOUT_META } from '../../src/constants/categories';
 import type { PagePurpose, LayoutType } from '../../src/constants/categories';
 import type { Layout } from '../../src/types/layout';
 import { Button } from '../../src/components/ui/button';
@@ -99,34 +99,34 @@ export default function App() {
       <div className="flex flex-col gap-2">
         <div className="flex gap-2">
           <select
-            aria-label="Filter by purpose"
+            aria-label="페이지 목적 필터"
             value={purposeFilter}
             onChange={(e) => setPurposeFilter(e.target.value as PagePurpose | '')}
             className="border rounded px-2 py-1.5 text-sm flex-1"
           >
-            <option value="">All purposes</option>
+            <option value="">전체 목적</option>
             {PAGE_PURPOSES.map((p) => (
-              <option key={p} value={p}>{p}</option>
+              <option key={p} value={p}>{PURPOSE_META[p].label}</option>
             ))}
           </select>
 
           <select
-            aria-label="Filter by layout type"
+            aria-label="레이아웃 유형 필터"
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value as LayoutType | '')}
             className="border rounded px-2 py-1.5 text-sm flex-1"
           >
-            <option value="">All types</option>
+            <option value="">전체 유형</option>
             {LAYOUT_TYPES.map((t) => (
-              <option key={t} value={t}>{t}</option>
+              <option key={t} value={t}>{LAYOUT_META[t].label}</option>
             ))}
           </select>
         </div>
 
         <input
           type="text"
-          aria-label="Search layouts"
-          placeholder="Search..."
+          aria-label="레이아웃 검색"
+          placeholder="검색..."
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           className="border rounded px-3 py-1.5 text-sm w-full"
@@ -195,10 +195,10 @@ export default function App() {
                 {/* Badges */}
                 <div className="flex gap-1.5 flex-wrap">
                   <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
-                    {layout.page_purpose}
+                    {PURPOSE_META[layout.page_purpose].label}
                   </span>
                   <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
-                    {layout.layout_type}
+                    {LAYOUT_META[layout.layout_type].label}
                   </span>
                 </div>
 

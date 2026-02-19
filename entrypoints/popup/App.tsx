@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { insertLayout, uploadScreenshot, updateScreenshotPath } from '../../src/services/layout-service';
 import { captureCurrentTab, extractMetadata, isRestrictedUrl } from '../../src/lib/messaging';
 import type { PageMetadata } from '../../src/lib/messaging';
-import { PAGE_PURPOSES, LAYOUT_TYPES } from '../../src/constants/categories';
+import { PAGE_PURPOSES, LAYOUT_TYPES, PURPOSE_META, LAYOUT_META } from '../../src/constants/categories';
 import type { PagePurpose, LayoutType } from '../../src/constants/categories';
 import { Button } from '../../src/components/ui/button';
 
@@ -134,7 +134,7 @@ export default function App() {
 
       <div className="flex flex-col gap-2">
         <label className="text-sm font-medium" htmlFor="page-purpose">
-          Page Purpose
+          페이지 목적
         </label>
         <select
           id="page-purpose"
@@ -143,16 +143,18 @@ export default function App() {
           className="border rounded px-3 py-2 text-sm"
           disabled={restricted}
         >
-          <option value="">Select purpose...</option>
+          <option value="">목적을 선택하세요...</option>
           {PAGE_PURPOSES.map((p) => (
-            <option key={p} value={p}>{p}</option>
+            <option key={p} value={p} title={PURPOSE_META[p].description}>
+              {PURPOSE_META[p].label} — {PURPOSE_META[p].description}
+            </option>
           ))}
         </select>
       </div>
 
       <div className="flex flex-col gap-2">
         <label className="text-sm font-medium" htmlFor="layout-type">
-          Layout Type
+          레이아웃 유형
         </label>
         <select
           id="layout-type"
@@ -161,9 +163,11 @@ export default function App() {
           className="border rounded px-3 py-2 text-sm"
           disabled={restricted}
         >
-          <option value="">Select type...</option>
+          <option value="">유형을 선택하세요...</option>
           {LAYOUT_TYPES.map((t) => (
-            <option key={t} value={t}>{t}</option>
+            <option key={t} value={t} title={LAYOUT_META[t].description}>
+              {LAYOUT_META[t].label} — {LAYOUT_META[t].description}
+            </option>
           ))}
         </select>
       </div>
@@ -173,7 +177,7 @@ export default function App() {
         disabled={!canSave}
         className="w-full mt-2"
       >
-        {saving ? 'Saving...' : 'Save Layout'}
+        {saving ? '저장 중...' : '레이아웃 저장'}
       </Button>
     </div>
   );

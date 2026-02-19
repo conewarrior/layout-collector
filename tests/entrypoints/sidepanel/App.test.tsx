@@ -101,10 +101,10 @@ describe('SidePanel App', () => {
       expect(screen.getByText('Example Site')).toBeDefined();
       expect(screen.getByText('https://example.com')).toBeDefined();
 
-      // Badges exist (use getAllByText since filter options share text)
-      const landingBadges = screen.getAllByText('Landing');
+      // Badges show Korean labels (filter options + badge share same label text)
+      const landingBadges = screen.getAllByText('랜딩 페이지');
       expect(landingBadges.length).toBeGreaterThanOrEqual(2); // option + badge
-      const heroBadges = screen.getAllByText('Hero+CTA');
+      const heroBadges = screen.getAllByText('히어로 섹션');
       expect(heroBadges.length).toBeGreaterThanOrEqual(2); // option + badge
 
       expect(screen.getByText('Dashboard App')).toBeDefined();
@@ -149,7 +149,7 @@ describe('SidePanel App', () => {
       mockGetLayouts.mockResolvedValue([FAKE_LAYOUTS[0]!]);
 
       await act(async () => {
-        fireEvent.change(screen.getByLabelText('Filter by purpose'), { target: { value: 'Landing' } });
+        fireEvent.change(screen.getByLabelText('페이지 목적 필터'), { target: { value: 'Landing' } });
       });
 
       expect(mockGetLayouts).toHaveBeenCalledWith(
@@ -168,7 +168,7 @@ describe('SidePanel App', () => {
       mockGetLayouts.mockResolvedValue([FAKE_LAYOUTS[1]!]);
 
       await act(async () => {
-        fireEvent.change(screen.getByLabelText('Filter by layout type'), { target: { value: 'Card Grid' } });
+        fireEvent.change(screen.getByLabelText('레이아웃 유형 필터'), { target: { value: 'Card Grid' } });
       });
 
       expect(mockGetLayouts).toHaveBeenCalledWith(
@@ -188,7 +188,7 @@ describe('SidePanel App', () => {
       mockGetLayouts.mockClear();
 
       await act(async () => {
-        fireEvent.change(screen.getByLabelText('Search layouts'), { target: { value: 'landing' } });
+        fireEvent.change(screen.getByLabelText('레이아웃 검색'), { target: { value: 'landing' } });
       });
 
       // Immediately after typing, no new call yet
@@ -206,7 +206,7 @@ describe('SidePanel App', () => {
       mockGetLayouts.mockResolvedValue([FAKE_LAYOUTS[0]!]);
 
       await act(async () => {
-        fireEvent.change(screen.getByLabelText('Search layouts'), { target: { value: 'landing' } });
+        fireEvent.change(screen.getByLabelText('레이아웃 검색'), { target: { value: 'landing' } });
       });
 
       await act(async () => {
