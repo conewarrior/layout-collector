@@ -455,7 +455,7 @@ Wave 5 (After Task 5):
 
 ---
 
-- [ ] 3. Supabase Client Data Layer — Types, Client Init, Service Functions
+- [x] 3. Supabase Client Data Layer — Types, Client Init, Service Functions
 
   **What to do**:
   - TypeScript 타입 정의 (`src/types/layout.ts`):
@@ -613,7 +613,7 @@ Wave 5 (After Task 5):
 
 ---
 
-- [ ] 4. Background Capture Logic — captureVisibleTab + Content Script + Messaging
+- [x] 4. Background Capture Logic — captureVisibleTab + Content Script + Messaging
 
   **What to do**:
   - Content Script (`entrypoints/content.ts`):

@@ -1,5 +1,6 @@
 {
   "name": "layout-collector",
+  "version": "1.0.0",
   "module": "index.ts",
   "type": "module",
   "private": true,
@@ -7,7 +8,8 @@
     "build": "wxt build",
     "dev": "wxt",
     "test": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "zip": "wxt build && cd .output/chrome-mv3 && zip -r ../../layout-collector.zip ."
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
@@ -23,6 +25,7 @@
     "postcss": "^8.5.6",
     "shadcn-ui": "^0.9.5",
     "tailwindcss": "^4.1.18",
+    "vite": "^6.3.4",
     "vitest": "^4.0.18",
     "wxt": "^0.20.15"
   },
@@ -30,6 +33,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@gpters-internal/ui": "0.0.17",
     "@supabase/supabase-js": "^2.95.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"

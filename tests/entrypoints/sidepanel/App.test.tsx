@@ -2,7 +2,7 @@
 import React from 'react';
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, act } from '@testing-library/react';
-import App from './App';
+import App from '../../../entrypoints/sidepanel/App';
 
 // --- Mocks ---
 
@@ -10,7 +10,7 @@ const mockGetLayouts = vi.fn();
 const mockDeleteLayout = vi.fn();
 const mockGetScreenshotUrl = vi.fn();
 
-vi.mock('../../src/services/layout-service', () => ({
+vi.mock('@/services/layout-service', () => ({
   getLayouts: (...args: any[]) => mockGetLayouts(...args),
   deleteLayout: (...args: any[]) => mockDeleteLayout(...args),
   getScreenshotUrl: (...args: any[]) => mockGetScreenshotUrl(...args),

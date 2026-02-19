@@ -4,10 +4,10 @@ export default defineConfig({
   modules: ['@wxt-dev/auto-icons'],
   manifest: {
     name: 'Layout Collector',
-    description: 'Collect and analyze web layouts',
-    permissions: ['activeTab', 'scripting', 'storage'],
+    description: 'Capture screenshots, metadata, and categorize web page layouts. Save to Supabase and browse your design reference gallery.',
+    permissions: ['activeTab', 'scripting', 'storage', 'sidePanel'],
     side_panel: {
-      default_path: 'src/sidepanel/index.html',
+      default_path: 'sidepanel.html',
     },
   },
 });

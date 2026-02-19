@@ -2,7 +2,7 @@
 import React from 'react';
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
-import App from './App';
+import App from '../../../entrypoints/popup/App';
 
 // --- Mocks ---
 
