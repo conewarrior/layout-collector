@@ -1,0 +1,19 @@
+{
+  "name": "layout-collector-mcp",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "layout-collector-mcp": "build/index.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod +x build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "@supabase/supabase-js": "^2.95.3",
+    "zod": "^3.25.36"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

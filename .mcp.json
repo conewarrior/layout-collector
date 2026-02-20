@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp?project_ref=ecxjzhriysblfwocoeuc"
+    },
+    "layout-collector": {
+      "command": "node",
+      "args": ["./mcp-server/build/index.js"]
+    }
+  }
+}
