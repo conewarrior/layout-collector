@@ -1,5 +1,5 @@
 {
-  "name": "layout-collector-mcp",
+  "name": "@gpters-internal/layout-collector-mcp",
   "version": "1.0.0",
   "type": "module",
   "bin": {
@@ -7,6 +7,9 @@
   },
   "scripts": {
     "build": "tsc && chmod +x build/index.js"
+  },
+  "publishConfig": {
+    "registry": "https://verdaccio.gpters.org/"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",
