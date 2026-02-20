@@ -7,13 +7,17 @@ import App from '../../../entrypoints/popup/App';
 // --- Mocks ---
 
 const mockInsertLayout = vi.fn();
+const mockUpdateLayout = vi.fn();
 const mockUploadScreenshot = vi.fn();
 const mockUpdateScreenshotPath = vi.fn();
+const mockCheckDuplicateUrl = vi.fn();
 
 vi.mock('@/services/layout-service', () => ({
   insertLayout: (...args: any[]) => mockInsertLayout(...args),
+  updateLayout: (...args: any[]) => mockUpdateLayout(...args),
   uploadScreenshot: (...args: any[]) => mockUploadScreenshot(...args),
   updateScreenshotPath: (...args: any[]) => mockUpdateScreenshotPath(...args),
+  checkDuplicateUrl: (...args: any[]) => mockCheckDuplicateUrl(...args),
 }));
 
 const mockCaptureCurrentTab = vi.fn();
@@ -58,6 +62,7 @@ function setupNormalTab() {
   mockIsRestrictedUrl.mockReturnValue(false);
   mockExtractMetadata.mockResolvedValue(FAKE_METADATA);
   mockCaptureCurrentTab.mockResolvedValue(FAKE_SCREENSHOT);
+  mockCheckDuplicateUrl.mockResolvedValue(null);
 }
 
 function setupRestrictedTab() {
@@ -180,7 +185,7 @@ describe('Popup App', () => {
         fireEvent.click(screen.getByRole('button', { name: /레이아웃 저장/ }));
       });
 
-      expect(screen.getByText('Layout saved successfully!')).toBeDefined();
+      expect(screen.getByText('레이아웃이 저장되었습니다!')).toBeDefined();
     });
   });
 
@@ -213,7 +218,7 @@ describe('Popup App', () => {
         render(<App />);
       });
 
-      expect(screen.getByText('Cannot capture this page')).toBeDefined();
+      expect(screen.getByText('이 페이지는 캡처할 수 없습니다')).toBeDefined();
       const saveBtn = screen.getByRole('button', { name: /레이아웃 저장/ }) as HTMLButtonElement;
       expect(saveBtn.disabled).toBe(true);
     });

@@ -2,10 +2,34 @@ import { supabaseBrowser } from '../lib/supabase';
 import type { Layout, LayoutInsert } from '../types/layout';
 import type { PagePurpose, LayoutType } from '../constants/categories';
 
+export async function checkDuplicateUrl(url: string): Promise<Layout | null> {
+  const { data, error } = await supabaseBrowser
+    .from('layouts')
+    .select('*')
+    .eq('url', url)
+    .limit(1)
+    .maybeSingle();
+
+  if (error) throw new Error(error.message);
+  return data;
+}
+
 export async function insertLayout(data: LayoutInsert): Promise<Layout> {
   const { data: layout, error } = await supabaseBrowser
     .from('layouts')
     .insert(data)
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message);
+  return layout;
+}
+
+export async function updateLayout(layoutId: string, data: Partial<LayoutInsert>): Promise<Layout> {
+  const { data: layout, error } = await supabaseBrowser
+    .from('layouts')
+    .update(data)
+    .eq('id', layoutId)
     .select()
     .single();
 
@@ -30,7 +54,7 @@ export async function uploadScreenshot(dataUrl: string, layoutId: string): Promi
   const path = `${layoutId}.jpg`;
   const { data, error } = await supabaseBrowser.storage
     .from('screenshots')
-    .upload(path, blob);
+    .upload(path, blob, { upsert: true });
 
   if (error) throw new Error(error.message);
   return data.path;
@@ -40,12 +64,15 @@ export async function updateScreenshotPath(
   layoutId: string,
   screenshotPath: string
 ): Promise<void> {
-  const { error } = await supabaseBrowser
+  const { data, error } = await supabaseBrowser
     .from('layouts')
     .update({ screenshot_path: screenshotPath })
-    .eq('id', layoutId);
+    .eq('id', layoutId)
+    .select('id')
+    .single();
 
   if (error) throw new Error(error.message);
+  if (!data) throw new Error('스크린샷 경로 업데이트에 실패했습니다');
 }
 
 interface GetLayoutsFilters {

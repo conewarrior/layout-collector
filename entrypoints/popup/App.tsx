@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { insertLayout, uploadScreenshot, updateScreenshotPath } from '../../src/services/layout-service';
+import { insertLayout, updateLayout, uploadScreenshot, updateScreenshotPath, checkDuplicateUrl } from '../../src/services/layout-service';
 import { captureCurrentTab, extractMetadata, isRestrictedUrl } from '../../src/lib/messaging';
 import type { PageMetadata } from '../../src/lib/messaging';
 import { PAGE_PURPOSES, LAYOUT_TYPES, PURPOSE_META, LAYOUT_META } from '../../src/constants/categories';
@@ -17,6 +17,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [restricted, setRestricted] = useState(false);
+  const [duplicate, setDuplicate] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export default function App() {
       try {
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
         if (!tab?.url || !tab.id) {
-          setError('Cannot access current tab');
+          setError('현재 탭에 접근할 수 없습니다');
           setLoading(false);
           return;
         }
@@ -38,15 +39,20 @@ export default function App() {
           return;
         }
 
-        const [meta, dataUrl] = await Promise.all([
+        const [meta, dataUrl, existing] = await Promise.all([
           extractMetadata(tab.id),
           captureCurrentTab(),
+          checkDuplicateUrl(tab.url),
         ]);
 
         setMetadata(meta);
         setScreenshot(dataUrl);
+
+        if (existing) {
+          setDuplicate(existing.id);
+        }
       } catch (err: any) {
-        setError(err.message || 'Failed to load tab data');
+        setError(err.message || '탭 데이터를 불러오지 못했습니다');
       } finally {
         setLoading(false);
       }
@@ -63,7 +69,7 @@ export default function App() {
     setError(null);
 
     try {
-      const layout = await insertLayout({
+      const layoutData = {
         url: tabUrl,
         title: metadata?.title || tabTitle || null,
         description: metadata?.description || null,
@@ -74,15 +80,25 @@ export default function App() {
         favicon_url: metadata?.favicon_url || null,
         page_purpose: pagePurpose as PagePurpose,
         layout_type: layoutType as LayoutType,
-      });
+      };
 
-      const path = await uploadScreenshot(screenshot, layout.id);
-      await updateScreenshotPath(layout.id, path);
+      let layoutId: string;
+
+      if (duplicate) {
+        const updated = await updateLayout(duplicate, layoutData);
+        layoutId = updated.id;
+      } else {
+        const created = await insertLayout(layoutData);
+        layoutId = created.id;
+      }
+
+      const path = await uploadScreenshot(screenshot, layoutId);
+      await updateScreenshotPath(layoutId, path);
 
       setSuccess(true);
       setTimeout(() => window.close(), 2000);
     } catch (err: any) {
-      setError(err.message || 'Failed to save layout');
+      setError(err.message || '저장에 실패했습니다');
       setSaving(false);
     }
   }
@@ -92,7 +108,7 @@ export default function App() {
       <h1 className="text-lg font-semibold">Layout Collector</h1>
 
       <div className="text-sm text-gray-600 truncate" title={tabUrl}>
-        {tabUrl || 'Loading...'}
+        {tabUrl || '불러오는 중...'}
       </div>
       <div className="text-sm font-medium truncate" title={tabTitle}>
         {tabTitle}
@@ -100,7 +116,13 @@ export default function App() {
 
       {restricted && (
         <div className="bg-red-50 text-red-600 p-3 rounded text-sm" role="alert">
-          Cannot capture this page
+          이 페이지는 캡처할 수 없습니다
+        </div>
+      )}
+
+      {duplicate && (
+        <div className="bg-yellow-50 text-yellow-700 p-3 rounded text-sm" role="alert">
+          이미 저장된 URL입니다. 다시 저장하면 기존 데이터를 덮어씁니다.
         </div>
       )}
 
@@ -112,7 +134,7 @@ export default function App() {
 
       {success && (
         <div className="bg-green-50 text-green-600 p-3 rounded text-sm" role="alert">
-          Layout saved successfully!
+          {duplicate ? '레이아웃이 업데이트되었습니다!' : '레이아웃이 저장되었습니다!'}
         </div>
       )}
 
@@ -128,7 +150,7 @@ export default function App() {
 
       {loading && !restricted && !error && (
         <div className="text-sm text-gray-400 text-center py-4">
-          Loading...
+          불러오는 중...
         </div>
       )}
 
@@ -177,7 +199,7 @@ export default function App() {
         disabled={!canSave}
         className="w-full mt-2"
       >
-        {saving ? '저장 중...' : '레이아웃 저장'}
+        {saving ? '저장 중...' : duplicate ? '레이아웃 업데이트' : '레이아웃 저장'}
       </Button>
     </div>
   );
