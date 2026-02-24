@@ -1,1 +1,37 @@
 @import "tailwindcss";
+
+@theme {
+  /* Semantic colors - mapped from tokens.css primitives */
+  --color-background: var(--neutral-50);
+  --color-foreground: var(--neutral-900);
+  --color-muted: var(--neutral-100);
+  --color-muted-foreground: var(--neutral-600);
+  --color-border: var(--neutral-200);
+  --color-input: var(--neutral-200);
+  --color-ring: var(--primary-500);
+  --color-primary: var(--primary-500);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--neutral-100);
+  --color-secondary-foreground: var(--neutral-900);
+  --color-destructive: var(--error-500);
+  --color-destructive-foreground: #ffffff;
+  --color-accent: var(--primary-50);
+  --color-accent-foreground: var(--primary-700);
+
+  /* Status colors (alerts, badges) */
+  --color-success-bg: var(--success-50);
+  --color-success-text: var(--success-700);
+  --color-warning-bg: var(--warning-50);
+  --color-warning-text: var(--warning-700);
+  --color-error-bg: var(--error-50);
+  --color-error-text: var(--error-700);
+  --color-info-bg: var(--info-50);
+  --color-info-text: var(--info-700);
+
+  /* Radius */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+  --radius-2xl: 12px;
+}

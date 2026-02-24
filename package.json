@@ -35,7 +35,14 @@
   "dependencies": {
     "@gpters-internal/ui": "0.0.17",
     "@supabase/supabase-js": "^2.95.3",
+    "lucide-react": "^0.575.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
+  },
+  "overrides": {
+    "esbuild": "0.25.12"
+  },
+  "resolutions": {
+    "esbuild": "0.25.12"
   }
 }
