@@ -33,27 +33,36 @@ export async function captureCurrentTab(): Promise<string> {
 }
 
 export async function extractMetadata(tabId: number): Promise<PageMetadata> {
-  return new Promise((resolve, reject) => {
-    chrome.tabs.sendMessage(
-      tabId,
-      { type: 'extract-metadata' },
-      (response: PageMetadata & { error?: string }) => {
-        if (chrome.runtime.lastError) {
-          reject(new Error(chrome.runtime.lastError.message));
-        } else if (response.error) {
-          reject(new Error(response.error));
-        } else {
-          resolve({
-            title: response.title,
-            description: response.description,
-            og_image: response.og_image,
-            og_title: response.og_title,
-            og_description: response.og_description,
-            og_type: response.og_type,
-            favicon_url: response.favicon_url,
-          });
-        }
-      }
-    );
+  const results = await chrome.scripting.executeScript({
+    target: { tabId },
+    func: () => {
+      const title = document.title;
+      const description =
+        document.querySelector<HTMLMetaElement>('meta[name="description"]')
+          ?.content || null;
+      const og_image =
+        document.querySelector<HTMLMetaElement>('meta[property="og:image"]')
+          ?.content || null;
+      const og_title =
+        document.querySelector<HTMLMetaElement>('meta[property="og:title"]')
+          ?.content || null;
+      const og_description =
+        document.querySelector<HTMLMetaElement>('meta[property="og:description"]')
+          ?.content || null;
+      const og_type =
+        document.querySelector<HTMLMetaElement>('meta[property="og:type"]')
+          ?.content || null;
+      const faviconLink =
+        document.querySelector<HTMLLinkElement>('link[rel="icon"]') ||
+        document.querySelector<HTMLLinkElement>('link[rel="shortcut icon"]');
+      const favicon_url = faviconLink?.href || null;
+      return { title, description, og_image, og_title, og_description, og_type, favicon_url };
+    },
   });
+
+  const result = results[0]?.result;
+  if (!result) {
+    throw new Error('Failed to extract metadata');
+  }
+  return result as PageMetadata;
 }
